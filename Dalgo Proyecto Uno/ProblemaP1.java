@@ -5,11 +5,11 @@ public class ProblemaP1 {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int T = sc.nextInt(); // Número de casos de prueba
+        int T = sc.nextInt(); // NÃºmero de casos de prueba
         while (T-- > 0) {
             int n = sc.nextInt();
-            int j = sc.nextInt();  // Número de elementos a seleccionar
-            int m = sc.nextInt();  // Número máximo de swaps permitidos
+            int j = sc.nextInt();  // NÃºmero de elementos a seleccionar
+            int m = sc.nextInt();  // NÃºmero mÃ¡ximo de swaps permitidos
             int[] arr = new int[n];
             for (int i = 0; i < n; i++) {
                 arr[i] = sc.nextInt();
@@ -19,11 +19,11 @@ public class ProblemaP1 {
         sc.close();
     }
 
-    // Función que resuelve el problema utilizando DP en dos capas (prev y curr)
+    // FunciÃ³n que resuelve el problema utilizando DP en dos capas (prev y curr)
     static int solve(int n, int j, int m, int[] arr) {
         // Usamos dos arreglos 2D: prev[s][x] y curr[s][x]
         // s: cantidad de elementos seleccionados (0..n)
-        // x: número de swaps usados (0..m)
+        // x: nÃºmero de swaps usados (0..m)
         int[][] prev = new int[n + 1][m + 1];
         int[][] curr = new int[n + 1][m + 1];
 
@@ -61,22 +61,22 @@ public class ProblemaP1 {
                         curr[s][x] = prefix[i];
                     }
                 } else {
-                    int cost = i - s; // swaps necesarios para "mover" arr[i-1] a la posición s
+                    int cost = i - s; // swaps necesarios para "mover" arr[i-1] a la posiciÃ³n s
                     for (int x = 0; x <= m; x++) {
                         if (x < cost) {
                             // No hay suficientes swaps: no podemos elegir arr[i-1]
                             curr[s][x] = prev[s][x];
                         } else {
-                            // Opción 1: No se incluye arr[i-1]
+                            // OpciÃ³n 1: No se incluye arr[i-1]
                             int op1 = prev[s][x];
-                            // Opción 2: Se incluye arr[i-1] consumiendo 'cost' swaps
+                            // OpciÃ³n 2: Se incluye arr[i-1] consumiendo 'cost' swaps
                             int op2 = prev[s - 1][x - cost] + arr[i - 1];
                             curr[s][x] = Math.min(op1, op2);
                         }
                     }
                 }
             }
-            // Copiamos curr a prev para la siguiente iteración
+            // Copiamos curr a prev para la siguiente iteraciÃ³n
             for (int s = 0; s <= n; s++) {
                 System.arraycopy(curr[s], 0, prev[s], 0, m + 1);
             }
